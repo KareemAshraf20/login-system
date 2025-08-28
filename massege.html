@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.section {
+  margin: 20px 0;
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  padding: 8px;
+  margin-top: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+    </style>
+</head>
+
+<body>
+    <div id="login-section" class="section">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="welcome-section" class="section" style="display: none;">
+        <h1>Welcome, <span id="welcome-message"></span>!</h1>
+        <button id="logout-button">Logout</button>
+    </div>
+
+    <script>
+        // DOM Elements
+            const loginSection = document.getElementById('login-section');
+            const welcomeSection = document.getElementById('welcome-section');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const loginForm = document.getElementById('login-form');
+            const logoutButton = document.getElementById('logout-button');
+
+            // Check if the user is already logged in
+            function checkLoginStatus() {
+                const username = localStorage.getItem('username');
+                if (username) {
+                    displayWelcomeMessage(username);
+                } else {
+                    loginSection.style.display = 'block';
+                    welcomeSection.style.display = 'none';
+                }
+            }
+
+            // Display the welcome message
+            function displayWelcomeMessage(username) {
+                loginSection.style.display = 'none';
+                welcomeSection.style.display = 'block';
+                welcomeMessage.textContent = username;
+            }
+
+            // Handle login form submission
+            loginForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Simple login check (for demo purposes)
+                if (username && password) {
+                    localStorage.setItem('username', username);
+                    displayWelcomeMessage(username);
+                } else {
+                    alert('Please fill in both fields!');
+                }
+            });
+
+            // Handle logout
+            logoutButton.addEventListener('click', function () {
+                localStorage.removeItem('username');
+                checkLoginStatus();
+            });
+
+            // On page load, check if the user is logged in
+            checkLoginStatus();
+
+    </script>
+</body>
+
+</html>
